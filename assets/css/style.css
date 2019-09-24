@@ -1,0 +1,17 @@
+.center {
+    margin: auto;
+    width: 700px;
+}
+
+.blackBackground {
+    background-color: black;
+}
+
+.whiteText {
+    color: white;
+}
+
+.currentWord {
+    letter-spacing: 1em;
+    
+}

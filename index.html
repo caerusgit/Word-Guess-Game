@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Word Guess Game</title>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+
+<body class="blackBackground whiteText">
+    <header class="center">
+        <img src="assets/images/Title.jpeg" alt="" height="700" width="700" align="middle">
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <div class="row justify-content-end">
+                    <div class="col-6">
+                        <img id="rdmImg" src="" alt="" height="300" width="300" align="middle">
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+            <div class="col">
+                <p>Press any key to get started!</p>
+                <p>Wins</p>
+                <p id="wins-text"></p>
+                <p>Current Word </p>
+                <p id="current-word-text" class="currentWord"></p>
+                <p>Number of Guesses Remaining</p>
+                <p id="guesses-remaining-text">12</p>
+                <p>Letters Already Guessed </p>
+                <p id="guesses-soFar-text"></p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+        // Creates an array that lists out all of the options (Possible letters).
+        var wordChoices = ["lust", "gluttony", "greed", "sloth", "wrath", "envy", "pride"];
+
+        // Creating variables to hold the number of wins, losses, and ties. They start at 0 except for the number of guesses.
+        var currentWord = "";
+        var userGuess;
+        var wins = 0;
+        var guessesRemaining = 12;
+        var correctGuesses = 0;
+        var computerGuess = "";
+        var lettersAlreadyGuessed = [];
+
+
+        // Create variables that hold references to the places in the HTML where we want to display things.
+        var winsText = document.getElementById("wins-text");
+        var currentWordText = document.getElementById("current-word-text");
+        var guessesLeftText = document.getElementById("guesses-remaining-text");
+        var guessesSoFarText = document.getElementById("guesses-soFar-text");
+        var imgPlaceholder = document.getElementById("imgPlaceholder")
+
+
+
+        // Randomly chooses a choice from the letter options array. This is the Computer's guess.
+        computerGuess = wordChoices[Math.floor(Math.random() * wordChoices.length)];
+        document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
+        // document.getElementById("rdmImg").src = "assets/images/" + computerGuess + '.jpeg';
+
+        console.log("Computer guess: " + computerGuess);
+
+        for (i = 0; i < computerGuess.length; i++) {
+            currentWord = currentWord + "_";
+        }
+
+        currentWordArray = currentWord.split('');
+        console.log("currentWordArray: " + currentWordArray);
+
+        currentWordText.textContent = currentWord;
+
+
+
+
+
+
+
+
+
+        // This function is run whenever the user presses a key.
+        document.onkeyup = function (event) {
+
+            // Determines which key was pressed and converts it to lowercase.
+            userGuess = event.key.toLowerCase();
+            console.log(userGuess);
+
+            indexGuessed = computerGuess.indexOf(userGuess);
+            console.log(indexGuessed);
+
+
+
+
+
+            // function indexOfAll(array, searchItem) {
+            //     var i = array.indexOf(searchItem),
+            //         indexes = [];
+            //     while (i !== -1) {
+            //         indexes.push(i);
+            //         i = array.indexOf(searchItem, ++i);
+            //     }
+            //     return indexes;
+            // }
+
+            // var array = ["test234", "test9495", "test234", "test93992", "test234"];
+            // document.write(JSON.stringify(indexOfAll(array, "test234")));
+
+
+
+
+
+
+            if (lettersAlreadyGuessed.indexOf(userGuess) == -1) {
+                lettersAlreadyGuessed.push(userGuess);
+                console.log(lettersAlreadyGuessed);
+
+
+
+
+
+                if (indexGuessed >= 0) {
+                    console.log("guessMatched: " + computerGuess[indexGuessed]);
+                    currentWordArray[indexGuessed] = computerGuess[indexGuessed]
+                    console.log("Ahí va el arreglo: ")
+                    console.log(currentWordArray);
+
+                    currentWord = currentWordArray.join("");
+                    console.log("Current word: " + currentWord)
+                    correctGuesses++
+                    if (correctGuesses === computerGuess.length) {
+                        wins++
+                        winsText.textContent = wins;
+                        guessesRemaining = 12
+                        correctGuesses = 0;
+                        currentWord = "";
+                        currentWordArray = [];
+                        lettersAlreadyGuessed = [];
+                        document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
+                        computerGuess = wordChoices[Math.floor(Math.random() * wordChoices.length)];
+                        document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
+                        // document.getElementById("rdmImg").src = "assets/images/" + computerGuess + '.jpeg';
+                        console.log("New computer guess: " + computerGuess);
+                        for (i = 0; i < computerGuess.length; i++) {
+                            currentWord = currentWord + "_";
+                        }
+                        currentWordArray = currentWord.split('');
+                        console.log("New currentWordArray: " + currentWordArray);
+                    }
+                } else {
+                    guessesRemaining--;
+                    if (guessesRemaining < 1) {
+                        guessesRemaining = 12
+                        correctGuesses = 0;
+                        currentWord = "";
+                        currentWordArray = [];
+                        lettersAlreadyGuessed = [];
+                        document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
+                        computerGuess = wordChoices[Math.floor(Math.random() * wordChoices.length)];
+                        document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
+                        // document.getElementById("rdmImg").src = "assets/images/" + computerGuess + '.jpeg';
+                        console.log("New computer guess: " + computerGuess);
+                        for (i = 0; i < computerGuess.length; i++) {
+                            currentWord = currentWord + "_";
+                        }
+                        currentWordArray = currentWord.split('');
+                        console.log("New currentWordArray: " + currentWordArray);
+                    }
+                }
+            }
+
+
+            // Display the user and computer guesses, and wins/losses/guessesLeft.
+            // winsText.textContent = "Wins: " + wins;
+            currentWordText.textContent = currentWord;
+            guessesLeftText.textContent = guessesRemaining;
+            guessesSoFarText.textContent = lettersAlreadyGuessed;
+
+
+
+
+        };
+    </script>
+
+</body>
+
+</html>
