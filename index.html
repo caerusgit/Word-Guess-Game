@@ -18,22 +18,14 @@
     </header>
 
     <div class="container">
-        <div class="row">
-            <div class="col">
-
-                <div class="row justify-content-end">
-                    <div class="col-6">
-                        <img id="rdmImg" src="" alt="" height="300" width="300" align="middle">
-                    </div>
-                </div>
-
-
-
-
-
-
+        <div class="row justify-content-md-center">
+            <div class="col-3 dashedBorder">
+                <br>
+                <br>
+                <br>
+                <img id="rdmImg" src="" alt="" height="250" width="250" align="middle">
             </div>
-            <div class="col">
+            <div class="col-3 dashedBorder textAlignCenter biggerText">
                 <p>Press any key to get started!</p>
                 <p>Wins</p>
                 <p id="wins-text"></p>
@@ -110,25 +102,37 @@
             userGuess = event.key.toLowerCase();
             console.log(userGuess);
 
-            indexGuessed = computerGuess.indexOf(userGuess);
-            console.log(indexGuessed);
+            // indexGuessed = computerGuess.indexOf(userGuess);
+            // console.log(indexGuessed);
 
 
 
 
 
-            // function indexOfAll(array, searchItem) {
-            //     var i = array.indexOf(searchItem),
-            //         indexes = [];
-            //     while (i !== -1) {
-            //         indexes.push(i);
-            //         i = array.indexOf(searchItem, ++i);
-            //     }
-            //     return indexes;
-            // }
 
-            // var array = ["test234", "test9495", "test234", "test93992", "test234"];
-            // document.write(JSON.stringify(indexOfAll(array, "test234")));
+
+
+
+
+            let indexesGuessed = [];
+            let indexGuessed = computerGuess.indexOf(userGuess);
+
+            while (indexGuessed !== -1) {
+                indexesGuessed.push(indexGuessed);
+                indexGuessed = computerGuess.indexOf(userGuess, indexGuessed + 1);
+            }
+
+            console.log(indexesGuessed);
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -142,36 +146,54 @@
 
 
 
+                for (i = 0; i < indexesGuessed.length; i++) {
 
-                if (indexGuessed >= 0) {
-                    console.log("guessMatched: " + computerGuess[indexGuessed]);
-                    currentWordArray[indexGuessed] = computerGuess[indexGuessed]
-                    console.log("Ahí va el arreglo: ")
-                    console.log(currentWordArray);
+                    indexGuessed = indexesGuessed[i];
 
-                    currentWord = currentWordArray.join("");
-                    console.log("Current word: " + currentWord)
-                    correctGuesses++
-                    if (correctGuesses === computerGuess.length) {
-                        wins++
-                        winsText.textContent = wins;
-                        guessesRemaining = 12
-                        correctGuesses = 0;
-                        currentWord = "";
-                        currentWordArray = [];
-                        lettersAlreadyGuessed = [];
-                        document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
-                        computerGuess = wordChoices[Math.floor(Math.random() * wordChoices.length)];
-                        document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
-                        // document.getElementById("rdmImg").src = "assets/images/" + computerGuess + '.jpeg';
-                        console.log("New computer guess: " + computerGuess);
-                        for (i = 0; i < computerGuess.length; i++) {
-                            currentWord = currentWord + "_";
+                    if (indexGuessed >= 0) {
+                        console.log("guessMatched: " + computerGuess[indexGuessed]);
+                        currentWordArray[indexGuessed] = computerGuess[indexGuessed]
+                        console.log("Ahí va el arreglo: ")
+                        console.log(currentWordArray);
+
+                        currentWord = currentWordArray.join("");
+                        console.log("Current word: " + currentWord)
+                        correctGuesses++
+                        if (correctGuesses === computerGuess.length) {
+                            wins++
+                            winsText.textContent = wins;
+                            guessesRemaining = 12
+                            correctGuesses = 0;
+                            currentWord = "";
+                            currentWordArray = [];
+                            lettersAlreadyGuessed = [];
+                            document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
+                            computerGuess = wordChoices[Math.floor(Math.random() * wordChoices.length)];
+                            document.getElementById("rdmImg").src = "assets/images/" + computerGuess + "WithouText" + '.jpeg';
+                            // document.getElementById("rdmImg").src = "assets/images/" + computerGuess + '.jpeg';
+                            console.log("New computer guess: " + computerGuess);
+                            for (i = 0; i < computerGuess.length; i++) {
+                                currentWord = currentWord + "_";
+                            }
+                            currentWordArray = currentWord.split('');
+                            console.log("New currentWordArray: " + currentWordArray);
                         }
-                        currentWordArray = currentWord.split('');
-                        console.log("New currentWordArray: " + currentWordArray);
                     }
-                } else {
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                if (indexGuessed === -1) {
                     guessesRemaining--;
                     if (guessesRemaining < 1) {
                         guessesRemaining = 12
